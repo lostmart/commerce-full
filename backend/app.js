@@ -1,9 +1,10 @@
-const express = require("express")
 const mongoose = require("mongoose")
-require("dotenv").config()
+const express = require("express")
 
 const app = express()
+
 app.use(express.json())
+
 
 /*  CORS  */
 app.use((req, res, next) => {
@@ -20,7 +21,6 @@ app.use((req, res, next) => {
 })
 
 /* DB */
-//   JzD0oEXI7A1EwfCz
 
 mongoose
 	.connect(process.env.DB_CONNEXION)
@@ -31,6 +31,12 @@ mongoose
 		console.log("Unable to connect to MongoDB Atlas!")
 		console.error(error)
 	})
+
+app.get("/", (req, res) => {
+	res.json({
+		msg: "todo ok",
+	})
+})
 
 app.get("/api/dame", (req, res, next) => {
 	const items = [
