@@ -1,10 +1,10 @@
 const mongoose = require("mongoose")
 const express = require("express")
-
 const app = express()
 
-app.use(express.json())
+const connectToMongoDB = require("./utils/db_connection")
 
+app.use(express.json())
 
 /*  CORS  */
 app.use((req, res, next) => {
@@ -22,15 +22,16 @@ app.use((req, res, next) => {
 
 /* DB */
 
-mongoose
-	.connect(process.env.DB_CONNEXION)
-	.then(() => {
-		console.log("Successfully connected to MongoDB Atlas!")
-	})
-	.catch((error) => {
-		console.log("Unable to connect to MongoDB Atlas!")
-		console.error(error)
-	})
+async function startApp() {
+	try {
+		await connectToMongoDB()
+	} catch (error) {
+		console.error("Failed to start the application:", error.message)
+		process.exit(1)
+	}
+}
+
+startApp()
 
 app.get("/", (req, res) => {
 	res.json({
