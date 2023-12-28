@@ -4,6 +4,9 @@ const app = express()
 
 const connectToMongoDB = require("./utils/db_connection")
 
+/*  routes import */
+const userRoutes = require("./routes/UsersRoutes")
+
 app.use(express.json())
 
 /*  CORS  */
@@ -20,8 +23,7 @@ app.use((req, res, next) => {
 	next()
 })
 
-/* DB */
-
+/* DB connection */
 async function startApp() {
 	try {
 		await connectToMongoDB()
@@ -35,40 +37,14 @@ startApp()
 
 app.get("/", (req, res) => {
 	res.json({
-		msg: "todo ok",
+		msg: "Welcome to the consumers API",
 	})
 })
 
-app.get("/api/dame", (req, res, next) => {
-	const items = [
-		{
-			_id: 1,
-			name: "uno",
-			lastName: "personas",
-		},
-		{
-			_id: 2,
-			name: "dos",
-			lastName: "dos personas",
-		},
-	]
-	res.status(200).json({
-		data: items,
+app.get("/api", (req, res) => {
+	res.json({
+		msg: "Welcome to the consumers API",
 	})
-	next()
-})
-
-app.post("/api/dame", (req, res, next) => {
-	console.log(req.body)
-	res.status(201).json({
-		message: "Thing created successfully!",
-		data: req.body,
-	})
-	next()
-})
-
-app.get((req, res) => {
-	res.json({ message: "Your request was successful!" })
 })
 
 module.exports = app
