@@ -3,13 +3,8 @@ const router = express.Router()
 
 const userController = require("../controllers/userController")
 
-
-router.get("/", (req, res, next) => {
-    console.log("done !");
-    res.json({
-        msg: "you are on user route !!",
-	})
-})
+/* log in method from userController module  */
+router.get("/login", userController.login)
 
 router.post("/signup", userController.signup)
 

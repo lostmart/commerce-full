@@ -41,10 +41,13 @@ app.get("/", (req, res) => {
 	})
 })
 
-app.get("/api", (req, res) => {
+const manejameLaRuta = (req, res) => {
 	res.json({
-		msg: "Welcome to the consumers API",
+		msg: "dame temrnrua",
 	})
-})
+}
+
+
+app.use("/api/users", userRoutes)
 
 module.exports = app
