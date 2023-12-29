@@ -1,7 +1,16 @@
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
-exports.signup = (req, res, next) => {
+const User = require("../models/UserModel")
+
+exports.signup = async (req, res, next) => {
+	const data = req.body
+	const newUser = await new User({
+		...data
+	})
+	
+	console.log(newUser)
+
 	res.json({
 		msg: "this is the post stuff ...",
 	})
@@ -9,6 +18,8 @@ exports.signup = (req, res, next) => {
 }
 
 exports.login = (req, res, next) => {
+	const data = req.body
+	console.log(data)
 	res.json({
 		msg: "you are on user route !!",
 	})
