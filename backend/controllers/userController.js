@@ -4,15 +4,32 @@ const jwt = require("jsonwebtoken")
 const User = require("../models/UserModel")
 
 exports.signup = async (req, res, next) => {
+	// start msg and status variables
+	let msg = ""
+	let statusCode = 200
 	const data = req.body
-	const newUser = await new User({
-		...data
-	})
-	
-	console.log(newUser)
 
-	res.json({
-		msg: "this is the post stuff ...",
+	// set new usr using mongoose schema
+	const newUser = await new User({
+		...data,
+	})
+
+	// hush password !!!!!
+
+	try {
+		const savedUser = await newUser.save()
+		msg = "User created successfully!!"
+		statusCode = 201
+	} catch (err) {
+		// set message and error code
+		console.log(err)
+		msg = err.errors
+		statusCode = 400
+	}
+
+	// send status code and message as json
+	res.status(statusCode).json({
+		msg,
 	})
 	next()
 }
