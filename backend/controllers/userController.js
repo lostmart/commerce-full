@@ -7,14 +7,15 @@ exports.signup = async (req, res, next) => {
 	// start msg and status variables
 	let msg = ""
 	let statusCode = 200
-	const data = req.body
+
+	const hushedPass = await bcrypt.hash(req.body.password, 10)
 
 	// set new usr using mongoose schema
 	const newUser = await new User({
-		...data,
+		email: req.body.email,
+		userName: req.body.userName,
+		password: hushedPass,
 	})
-
-	// hush password !!!!!
 
 	try {
 		const savedUser = await newUser.save()
