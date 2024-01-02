@@ -6,6 +6,7 @@ const connectToMongoDB = require("./utils/db_connection")
 
 /*  routes import */
 const userRoutes = require("./routes/UsersRoutes")
+const productsRoutes = require("./routes/ProductsRoutes")
 
 app.use(express.json())
 
@@ -41,13 +42,9 @@ app.get("/", (req, res) => {
 	})
 })
 
-const manejameLaRuta = (req, res) => {
-	res.json({
-		msg: "dame temrnrua",
-	})
-}
 
 
 app.use("/api/users", userRoutes)
+app.use("/api/products", productsRoutes)
 
 module.exports = app

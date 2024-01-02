@@ -66,7 +66,7 @@ exports.login = async (req, res, next) => {
 		} else {
 			/* send token with user id and expire date  */
 			try {
-				msg = jwt.sign({ _id: foundUser._id }, "my_secret", {
+				msg = jwt.sign({ _id: foundUser._id }, process.env.JWT_PHRASE, {
 					expiresIn: "24h",
 				})
 			} catch (err) {
