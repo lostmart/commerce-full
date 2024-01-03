@@ -2,8 +2,7 @@ const mongoose = require("mongoose")
 
 async function connectToMongoDB() {
 	try {
-		const connectionString =
-			process.env.DB_LOCAL
+		const connectionString = process.env.DB_CONNEXION
 
 		await mongoose.connect(connectionString, {
 			useNewUrlParser: true,
