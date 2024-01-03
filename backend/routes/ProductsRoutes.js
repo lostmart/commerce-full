@@ -5,12 +5,15 @@ const productController = require("../controllers/productController")
 
 const authMiddleware = require("../middleware/auth")
 
-router.get("/", authMiddleware, (req, res) => {
-	res.status(200).json({
-		msg: "secret products route ...",
-	})
-})
+/* get all products  */
+router.get("/", authMiddleware, productController.getAllProducts)
+/*  get products by tags */
+router.get("/:tagName", authMiddleware, productController.getProductsByTag)
 
+/*  get one product by id */
+router.get("/id/:productId", authMiddleware, productController.getOneProductById)
+
+/*  create a product */
 router.post("/", authMiddleware, productController.newProduct)
 
 module.exports = router
