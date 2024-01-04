@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
+
 const Product = require("../models/ProductModel")
 
 /* create new product  */
@@ -18,7 +19,7 @@ exports.newProduct = async (req, res, next) => {
 		statusCode = 201
 	} catch (err) {
 		console.log(err)
-		msg = "product not created"
+		msg = err
 		statusCode = 500
 	}
 
