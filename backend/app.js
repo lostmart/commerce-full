@@ -1,3 +1,4 @@
+const path = require("path")
 const mongoose = require("mongoose")
 const express = require("express")
 const app = express()
@@ -42,9 +43,9 @@ app.get("/", (req, res) => {
 	})
 })
 
-
-
 app.use("/api/users", userRoutes)
 app.use("/api/products", productsRoutes)
+
+app.use("/images", express.static(path.join(__dirname, "images")))
 
 module.exports = app
