@@ -1,10 +1,34 @@
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
-// const Product = require("../models/ProductModel")
+const Product = require("../models/ProductModel")
+
+const multer = require("multer")
+
+const storage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, "images") // Images will be stored in the 'images' directory
+	},
+	filename: (req, file, cb) => {
+		const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9)
+		const extension = path.extname(file.originalname)
+		cb(null, file.fieldname + "-" + uniqueSuffix + extension)
+	},
+})
+
+const upload = multer({
+	storage: storage,
+	limits: {
+		fileSize: 1024 * 1024 * 5, // 5 MB limit per file
+	},
+})
 
 /* create new product  */
 exports.newProduct = async (req, res, next) => {
+	if (!req.files || req.files.length === 0) {
+		return res.status(400).send("No files were uploaded.")
+	}
+
 	//console.log(req.files)
 	// start msg and status variables
 	let msg = ""

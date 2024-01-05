@@ -1,26 +1,49 @@
 //Récupère le package multer qui permet de gerer des fichiers entrants
+const { log } = require("console")
 const multer = require("multer")
 
-//
-const MIME_TYPES = {
-	"image/jpg": "jpg",
-	"image/jpeg": "jpg",
-	"image/png": "png",
+const path = require("path")
+
+// Set up the storage for multer
+const storage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, "images")
+	},
+	filename: (req, file, cb) => {
+		console.log(file)
+		const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9)
+		const extension = path.extname(file.originalname)
+		const imagePath = file.originalname + "-" + uniqueSuffix + extension
+		cb(null, imagePath)
+	},
+})
+
+function checkFileType(file, cb) {
+	const filetypes = /webp|jpg|jpeg|png/ // Choose Types you want...
+	const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
+	const mimetype = filetypes.test(file.mimetype)
+	console.log(extname, mimetype)
+
+	if (extname && mimetype) {
+		return cb(null, true)
+	} else {
+		cb("Jpg, Jpeg, Png, webp images only!") // custom this message to fit your needs
+	}
+	// return cb(null, true)
 }
 
-const storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		cb(null, "images")
-		console.log(req.files)
+
+const upload = multer({
+	storage,
+	limits: {
+		fileSize: 1024 * 1024, // 1 MB limit per file
 	},
-	filename: function (req, file, cb) {
-		const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9)
-		cb(null, file.fieldname + "-" + uniqueSuffix)
+	fileFilter: function (req, file, cb) {
+		checkFileType(file, cb)
 	},
 })
 
 
 
-//exporte l'élément
-// module.exports = multer({ storage: storage }).single("image")
-module.exports = multer({ storage: storage }).array("file", 3)
+
+module.exports = upload.array("images", 3)
