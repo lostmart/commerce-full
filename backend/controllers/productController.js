@@ -3,24 +3,12 @@ const jwt = require("jsonwebtoken")
 
 const Product = require("../models/ProductModel")
 
-/**
- *
- * @param {object} // req the request object of the server
- * @param {object} / object from Multer with carrying data of the image file
- * @returns {string} a string with the url to find the image on the server
- */
-const imageFormator = (req, img) => {
-	const { protocol, host } = req
-	console.log(url.port)
-	const fileName = img.filename
-	return `${protocol}://${host}/images/${fileName}`
-}
-
 /* create new product  */
 exports.newProduct = async (req, res, next) => {
 	// prepare data
+	console.log(req.host)
 	const productImages = req.files.map((img) => {
-		return imageFormator(req, img)
+		return `${req.protocol}://${req.headers.host}/images/${img.filename}`
 	})
 	//console.log(productImages)
 	// start msg and status variables
@@ -87,7 +75,7 @@ exports.getOneProductById = async (req, res) => {
 		})
 	} catch (err) {
 		res.status(404).json({
-			product: "no found",
+			product: "nothing found",
 		})
 	}
 }
