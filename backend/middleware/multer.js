@@ -10,10 +10,9 @@ const storage = multer.diskStorage({
 		cb(null, "images")
 	},
 	filename: (req, file, cb) => {
-		console.log(file)
 		const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9)
 		const extension = path.extname(file.originalname)
-		const imagePath = file.originalname + "-" + uniqueSuffix + extension
+		const imagePath = file.fieldname + "-" + uniqueSuffix + extension
 		cb(null, imagePath)
 	},
 })
@@ -22,7 +21,7 @@ function checkFileType(file, cb) {
 	const filetypes = /webp|jpg|jpeg|png/ // Choose Types you want...
 	const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
 	const mimetype = filetypes.test(file.mimetype)
-	console.log(extname, mimetype)
+	// console.log(extname, mimetype)
 
 	if (extname && mimetype) {
 		return cb(null, true)
@@ -31,7 +30,6 @@ function checkFileType(file, cb) {
 	}
 	// return cb(null, true)
 }
-
 
 const upload = multer({
 	storage,
@@ -43,7 +41,4 @@ const upload = multer({
 	},
 })
 
-
-
-
-module.exports = upload.array("images", 3)
+module.exports = upload.array("product_img", 3)

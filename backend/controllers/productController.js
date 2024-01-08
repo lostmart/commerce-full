@@ -1,11 +1,11 @@
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
-// const Product = require("../models/ProductModel")
+const Product = require("../models/ProductModel")
 
 /* create new product  */
 exports.newProduct = async (req, res, next) => {
-	//console.log(req.files)
+	console.log(req.files)
 	// start msg and status variables
 	let msg = ""
 	let statusCode = 200

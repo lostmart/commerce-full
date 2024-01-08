@@ -23,10 +23,9 @@ router.get(
 	productController.getOneProductById
 )
 
-/*  create a product */
+/*  create a product  authMiddleware, */
 router.post(
 	"/",
-	authMiddleware,
 	upload,
 	productController.newProduct
 )
