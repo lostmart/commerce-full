@@ -68,6 +68,9 @@ const upload = multer({
 	},
 })
 
+/* static folder */
+app.use("/images", express.static(path.join(__dirname, "images")))
+
 app.post("/upload", (req, res) => {
 	upload.array("images", 3)(req, res, (err) => {
 		if (err instanceof multer.MulterError) {
