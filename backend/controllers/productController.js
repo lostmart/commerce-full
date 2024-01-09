@@ -6,7 +6,6 @@ const Product = require("../models/ProductModel")
 /* create new product  */
 exports.newProduct = async (req, res, next) => {
 	// prepare data
-	console.log(req.host)
 	const productImages = req.files.map((img) => {
 		return `${req.protocol}://${req.headers.host}/images/${img.filename}`
 	})
@@ -76,6 +75,30 @@ exports.getOneProductById = async (req, res) => {
 	} catch (err) {
 		res.status(404).json({
 			product: "nothing found",
+		})
+	}
+}
+
+/* delete one product by Id */
+exports.deleteById = async (req, res) => {
+	const productId = req.params.productId
+
+	try {
+		const tryProduct = await Product.findOne({ _id: productId })
+
+		if (!tryProduct) {
+			return res.status(404).json({ msg: "nothing found with this id" })
+		}
+
+		const foundProduct = await Product.deleteOne({ _id: productId })
+
+		res.status(200).json({
+			msg: "Product deleted",
+			id: `Product id: ${productId}`,
+		})
+	} catch (err) {
+		res.status(404).json({
+			msg: err,
 		})
 	}
 }
