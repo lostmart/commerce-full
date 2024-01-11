@@ -69,12 +69,18 @@ exports.getOneProductById = async (req, res) => {
 
 	try {
 		const foundProduct = await Product.findOne({ _id: productId })
+		/* nothing found */
+		if (!foundProduct) {
+			return res.status(404).json({
+				product: foundProduct,
+			})
+		}
 		res.status(200).json({
 			product: foundProduct,
 		})
 	} catch (err) {
-		res.status(404).json({
-			product: "nothing found",
+		res.status(500).json({
+			product: err,
 		})
 	}
 }
@@ -95,6 +101,44 @@ exports.deleteById = async (req, res) => {
 		res.status(200).json({
 			msg: "Product deleted",
 			id: `Product id: ${productId}`,
+		})
+	} catch (err) {
+		res.status(404).json({
+			msg: err,
+		})
+	}
+}
+
+/* put/patch one product by its Id */
+exports.updateProduct = async (req, res) => {
+	const productId = req.params.productId
+	// console.log(req.body)
+
+	// const productImages = req.files.map((img) => {
+	// 	return `${req.protocol}://${req.headers.host}/images/${img.filename}`
+	// })
+
+	console.log(req.files)
+
+	try {
+		const foundProduct = await Product.updateOne(
+			{ _id: productId },
+			{
+				$set: {
+					productName: req.body.productName,
+					productPrice: req.body.productPrice,
+					productTags: req.body.productTags,
+					productImages: ["uno", "dos"],
+				},
+			}
+		)
+		/*   check if it exists   */
+		if (!foundProduct.acknowledged) {
+			return res.status(404).json({ msg: "nothing found with this id" })
+		}
+
+		res.status(200).json({
+			product: foundProduct,
 		})
 	} catch (err) {
 		res.status(404).json({
