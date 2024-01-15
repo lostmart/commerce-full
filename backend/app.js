@@ -2,8 +2,6 @@ const path = require("path")
 const express = require("express")
 const app = express()
 
-const multer = require("multer")
-
 const connectToMongoDB = require("./utils/db_connection")
 
 /*  routes import */
