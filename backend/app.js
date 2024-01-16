@@ -2,6 +2,7 @@ const path = require("path")
 const express = require("express")
 const app = express()
 
+  
 const connectToMongoDB = require("./utils/db_connection")
 
 /*  routes import */
@@ -9,6 +10,8 @@ const userRoutes = require("./routes/UsersRoutes")
 const productsRoutes = require("./routes/ProductsRoutes")
 
 app.use(express.json())
+app.disable("x-powered-by") 
+
 
 /*  CORS  */
 app.use((req, res, next) => {
