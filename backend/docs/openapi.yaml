@@ -8,9 +8,9 @@ info:
   license:
     name: Localhost
     url: http://localhost:8080/
-  version: 1.0.11
+  version: 1.0.0
 externalDocs:
-  description: Here the repo fot his project
+  description: Here's the repo fot his project
   url: https://github.com/lostmart/commerce-full
 servers:
   - url: http://localhost:8080/
@@ -25,6 +25,24 @@ tags:
     description: Registered users with unique email
 paths:
   /api/products:
+    get:
+        tags:
+          - products
+        summary: A full list of all the products for sale
+        description: Retrieve all the products for sale
+        operationId: retreiveAllProducts
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Product'
+          '404':
+            description: No products found
+        security:
+          - petstore_auth:
+              - read:products
     put:
       tags:
         - products
@@ -708,6 +726,47 @@ components:
             wrapped: true
           items:
             $ref: '#/components/schemas/Tag'
+        status:
+          type: string
+          description: pet status in the store
+          enum:
+            - available
+            - pending
+            - sold
+      xml:
+        name: pet
+    Product:
+      required:
+        - productName
+        - photoUrls
+      type: object
+      properties:
+        _id:
+          type: objectId
+          format: 12-byte
+          example: 65a8e23dac4c027dee86f0ad
+        productName:
+          type: string
+          example: Bed lamp
+        category:
+          $ref: '#/components/schemas/Category'
+        photoUrls:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            type: string
+            xml:
+              name: photoUrl
+        tags:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Tag'
+        productDescription:
+          type: string
+          example: This sleek lamp features a modern design with a brushed metal base and a fabric lampshade that casts a warm and inviting glow. The adjustable neck allows you to direct the light exactly where you need it, whether for reading or creating a cozy ambiance
         status:
           type: string
           description: pet status in the store
