@@ -42,9 +42,15 @@ exports.newProduct = async (req, res, next) => {
 /* get a list aof all the products  */
 exports.getAllProducts = async (req, res, next) => {
 	const products = await Product.find()
-	res.status(200).json({
-		products,
-	})
+	if (products.length < 1) {
+		return res.status(404).json({
+			products,
+			msg: "No products found"
+		})
+	}
+		res.status(200).json({
+			products,
+		})
 }
 
 /* get a list of all the products based on the tags passed as a param  */
